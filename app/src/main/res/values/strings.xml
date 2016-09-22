@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="options">
+        <item>Upcoming</item>
+        <item>Being Shown</item>
+        <item>All The Time</item>
+    </string-array>
+</resources>
