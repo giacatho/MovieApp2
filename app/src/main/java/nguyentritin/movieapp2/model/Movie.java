@@ -10,11 +10,17 @@ public class Movie {
             new Movie("Movie 2")
     };
 
+    public Movie() {
+
+    }
+
     public Movie(String name) {
         this.setName(name);
     }
 
     private String name;
+    private String title;
+    private String overview;
 
     public String getName() {
         return name;
@@ -22,6 +28,22 @@ public class Movie {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOverview() {
+        return this.overview;
+    }
+
+    public void setOverview() {
+        this.overview = overview;
     }
 
     @Override

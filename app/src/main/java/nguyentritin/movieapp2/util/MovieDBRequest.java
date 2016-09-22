@@ -8,8 +8,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import nguyentritin.movieapp2.model.Movie;
 
 /**
  * Created by nguyentritin on 22/9/16.
@@ -23,10 +26,11 @@ public class MovieDBRequest extends AsyncTask<Void, Void, Void> {
     private String _urlString;
     private int _resultStatus;
     private String _resultString;
+    private List<Movie> _resultMovies;
 
     @Override
     protected Void doInBackground(Void... args) {
-        StringBuffer chaine = new StringBuffer("");
+        StringBuffer content = new StringBuffer("");
         try{
             URL url = new URL(_urlString);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -38,7 +42,7 @@ public class MovieDBRequest extends AsyncTask<Void, Void, Void> {
             BufferedReader rd = new BufferedReader(new InputStreamReader(inputStream));
             String line = "";
             while ((line = rd.readLine()) != null) {
-                chaine.append(line);
+                content.append(line);
             }
 
         } catch (IOException e) {
@@ -49,10 +53,12 @@ public class MovieDBRequest extends AsyncTask<Void, Void, Void> {
         }
 
         _resultStatus = RESULT_STATUS_SUCCESS;
-        _resultString = chaine.toString();
+        _resultString = content.toString();
 
         return null;
     }
+
+
 
     @Override
     protected void onPostExecute(Void json) {
