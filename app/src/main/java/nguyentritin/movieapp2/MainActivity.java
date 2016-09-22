@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import nguyentritin.movieapp2.util.MovieDBRequestDelegate;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

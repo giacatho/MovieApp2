@@ -21,4 +21,7 @@
         <activity android:name=".UpcomingMovieActivity"></activity>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
