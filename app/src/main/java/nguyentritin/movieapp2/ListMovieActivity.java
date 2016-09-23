@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -27,8 +29,7 @@ public class ListMovieActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ListView lv;
 
-
-    ArrayList<HashMap<String, String>> movieList;
+    public static ArrayList<HashMap<String, String>> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,15 @@ public class ListMovieActivity extends AppCompatActivity {
 
         movieList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.list);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
+                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
         GetMovies getMovies = new GetMovies();

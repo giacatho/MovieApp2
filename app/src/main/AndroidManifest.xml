@@ -24,7 +24,8 @@
         </activity>
         <activity android:name=".UpcomingMovieActivity" />
         <activity android:name=".ContactActivity" />
-        <activity android:name=".ListMovieActivity"></activity>
+        <activity android:name=".ListMovieActivity" />
+        <activity android:name=".MovieDetailActivity"></activity>
     </application>
 
 </manifest>
