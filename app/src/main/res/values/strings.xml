@@ -4,7 +4,8 @@
 
     <string-array name="options">
         <item>Upcoming</item>
-        <item>Being Shown</item>
-        <item>All The Time</item>
+        <item>Now Playing</item>
+        <item>Top Rated</item>
+        <item>Popular</item>
     </string-array>
 </resources>

@@ -1,6 +1,7 @@
 package nguyentritin.movieapp2;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,10 +38,15 @@ public class ListMovieActivity extends AppCompatActivity {
         movieList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.list);
 
-        new GetContacts().execute();
+        Intent intent = getIntent();
+        GetMovies getMovies = new GetMovies();
+        getMovies.setUrl(intent.getStringExtra("url"));
+        getMovies.execute();
     }
 
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+    private class GetMovies extends AsyncTask<Void, Void, Void> {
+        private String url;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -56,7 +62,7 @@ public class ListMovieActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             HttpsHandler hander = new HttpsHandler();
 
-            String jsonStr = hander.makeServiceCall(Consts.UPCOMING_MOVIE_URL);
+            String jsonStr = hander.makeServiceCall(this.url);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
@@ -127,6 +133,12 @@ public class ListMovieActivity extends AppCompatActivity {
             );
             lv.setAdapter(adapter);
 
+        }
+
+
+        // Setters
+        public void setUrl(String url) {
+            this.url = url;
         }
     }
 }

@@ -2,6 +2,7 @@ package nguyentritin.movieapp2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDBRequestDelegate;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,22 +39,23 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String url;
+
                 if (position == 0) {
-                    Intent intent = new Intent(MainActivity.this, UpcomingMovieActivity.class);
-                    startActivity(intent);
+                    url = Consts.UPCOMING_MOVIE_URL;
+                } else if (position == 1) {
+                    url = Consts.NOW_PLAYING_MOVIE_URL;
+                } else if (position == 2) {
+                    url = Consts.TOP_RATED_MOVIE_URL;
+                } else if (position == 2) {
+                    url = Consts.POPULAR_MOVIE_URL;
+                } else {
+                    url = Consts.NOW_PLAYING_MOVIE_URL;
                 }
-                else if (position == 1) {
-                    Intent intent = new Intent(MainActivity.this, ContactActivity.class);
-                    startActivity(intent);
-                }
-                else if (position == 2) {
-                    Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+
+                Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
             }
         });
     }
