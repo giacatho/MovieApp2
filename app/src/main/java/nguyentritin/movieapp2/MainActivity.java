@@ -2,7 +2,6 @@ package nguyentritin.movieapp2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import nguyentritin.movieapp2.util.Consts;
-import nguyentritin.movieapp2.util.MovieDBRequestDelegate;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -22,8 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UpcomingMovieActivity" />
-        <activity android:name=".ContactActivity" />
         <activity android:name=".ListMovieActivity" />
         <activity android:name=".MovieDetailActivity"></activity>
     </application>
