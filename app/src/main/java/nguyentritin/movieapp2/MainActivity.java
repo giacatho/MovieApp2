@@ -40,7 +40,16 @@ public class MainActivity extends AppCompatActivity {
                 if (position == 0) {
                     Intent intent = new Intent(MainActivity.this, UpcomingMovieActivity.class);
                     startActivity(intent);
-                } else {
+                }
+                else if (position == 1) {
+                    Intent intent = new Intent(MainActivity.this, ContactActivity.class);
+                    startActivity(intent);
+                }
+                else if (position == 2) {
+                    Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
+                    startActivity(intent);
+                }
+                else {
                     Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }

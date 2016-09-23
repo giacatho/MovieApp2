@@ -17,25 +17,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import nguyentritin.movieapp2.util.HttpHandler;
+import nguyentritin.movieapp2.util.Consts;
+import nguyentritin.movieapp2.util.HttpsHandler;
 
-public class ContactActivity extends AppCompatActivity {
-    private String TAG = ContactActivity.class.getSimpleName();
+public class ListMovieActivity extends AppCompatActivity {
+    private String TAG = ListMovieActivity.class.getSimpleName();
 
     private ProgressDialog pDialog;
     private ListView lv;
 
-    // URL to get contacts JSON
-    private static String url = "http://api.androidhive.info/contacts/";
 
-    ArrayList<HashMap<String, String>> contactList;
+    ArrayList<HashMap<String, String>> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        contactList = new ArrayList<>();
+        movieList = new ArrayList<>();
         lv = (ListView) findViewById(R.id.list);
 
         new GetContacts().execute();
@@ -47,7 +46,7 @@ public class ContactActivity extends AppCompatActivity {
             super.onPreExecute();
 
             // Showing progress dialog
-            pDialog = new ProgressDialog(ContactActivity.this);
+            pDialog = new ProgressDialog(ListMovieActivity.this);
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
@@ -55,9 +54,9 @@ public class ContactActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            HttpHandler hander = new HttpHandler();
+            HttpsHandler hander = new HttpsHandler();
 
-            String jsonStr = hander.makeServiceCall(url);
+            String jsonStr = hander.makeServiceCall(Consts.UPCOMING_MOVIE_URL);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
@@ -66,29 +65,23 @@ public class ContactActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     // Getting JSON array node
-                    JSONArray contacts = jsonObj.getJSONArray("contacts");
+                    JSONArray movies = jsonObj.getJSONArray("results");
 
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
+                    for (int i = 0; i < movies.length(); i++) {
+                        JSONObject mv = movies.getJSONObject(i);
 
-                        String id = c.getString("id");
-                        String name = c.getString("name");
-                        String email = c.getString("email");
-                        String address = c.getString("address");
-                        String gender = c.getString("gender");
+                        String id = mv.getString("id");
+                        String title = mv.getString("title");
+                        String originalTitle = mv.getString("original_title");
+                        String overview = mv.getString("overview");
 
-                        JSONObject phone = c.getJSONObject("phone");
-                        String mobile = phone.getString("mobile");
-                        String home = phone.getString("home");
-                        String office = phone.getString("officie");
+                        HashMap<String, String> movie = new HashMap<>();
+                        movie.put("id", id);
+                        movie.put("title", title);
+                        movie.put("original_title", originalTitle);
+                        movie.put("overview", overview);
 
-                        HashMap<String, String> contact = new HashMap<>();
-                        contact.put("id", id);
-                        contact.put("name", name);
-                        contact.put("email", email);
-                        contact.put("mobile", mobile);
-
-                        contactList.add(contact);
+                        movieList.add(movie);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error " + e.getMessage());
@@ -126,11 +119,11 @@ public class ContactActivity extends AppCompatActivity {
 
             // Update ListView
             ListAdapter adapter = new SimpleAdapter(
-                    ContactActivity.this,
-                    contactList,
-                    R.layout.list_item,
-                    new String[]{"name", "email", "mobile"},
-                    new int[] {R.id.name, R.id.email, R.id.mobile}
+                    ListMovieActivity.this,
+                    movieList,
+                    R.layout.list_movie_item,
+                    new String[]{"title", "overview"},
+                    new int[] {R.id.title, R.id.overview}
             );
             lv.setAdapter(adapter);
 

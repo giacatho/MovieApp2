@@ -1,6 +1,5 @@
 package nguyentritin.movieapp2.util;
 
-import android.text.LoginFilter;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -16,21 +15,22 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 // http://www.androidhive.info/2012/01/android-json-parsing-tutorial/
+
 /**
  * Created by nguyentritin on 22/9/16.
  */
-public class HttpHandler {
+public class HttpsHandler {
 
-    private static final String TAG = HttpHandler.class.getSimpleName();
+    private static final String TAG = HttpsHandler.class.getSimpleName();
 
-    public HttpHandler() {
+    public HttpsHandler() {
     }
 
     public String makeServiceCall(String reqUrl) {
         String response = null;
         try {
             URL url = new URL(reqUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             // read the response
             InputStream in = new BufferedInputStream(conn.getInputStream());
