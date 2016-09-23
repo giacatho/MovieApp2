@@ -10,4 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="nguyentritin.movieapp2.ListMovieActivity">
 
+    <ListView
+        android:id="@+id/list_movies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 </RelativeLayout>

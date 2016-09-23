@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="options">
+        <item>My Favorites</item>
         <item>Upcoming</item>
         <item>Now Playing</item>
         <item>Top Rated</item>

@@ -37,24 +37,47 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String url;
+                switch (position) {
+                    case 0:
+                        Intent intent = new Intent(MainActivity.this, ListFavoriteMovieActivity.class);
+                        startActivity(intent);
+                        break;
 
-                if (position == 0) {
-                    url = Consts.UPCOMING_MOVIE_URL;
-                } else if (position == 1) {
-                    url = Consts.NOW_PLAYING_MOVIE_URL;
-                } else if (position == 2) {
-                    url = Consts.TOP_RATED_MOVIE_URL;
-                } else if (position == 2) {
-                    url = Consts.POPULAR_MOVIE_URL;
-                } else {
-                    url = Consts.NOW_PLAYING_MOVIE_URL;
+                    case 1:
+                        url = Consts.UPCOMING_MOVIE_URL;
+                        startListMovieActivity(url);
+                        break;
+
+                    case 2:
+                        url = Consts.NOW_PLAYING_MOVIE_URL;
+                        startListMovieActivity(url);
+                        break;
+
+                    case 3:
+                        url = Consts.TOP_RATED_MOVIE_URL;
+                        startListMovieActivity(url);
+                        break;
+
+                    case 4:
+                        url = Consts.POPULAR_MOVIE_URL;
+                        startListMovieActivity(url);
+                        break;
+
+                    default:
+                        Snackbar.make(view, "Not implemented", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        break;
                 }
 
-                Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
+
             }
         });
+    }
+
+    private void startListMovieActivity(String url) {
+        Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
+        intent.putExtra("url", url);
+        startActivity(intent);
     }
 
     @Override

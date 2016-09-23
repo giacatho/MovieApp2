@@ -4,15 +4,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by nguyentritin on 23/9/16.
  */
 
 public class MovieDatabaseHelper extends SQLiteOpenHelper {
+    public static String TAG = MovieDatabaseHelper.class.getSimpleName();
     private static final String DB_NAME = "movie";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public MovieDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -20,10 +23,12 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE movies(_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "mv_id INTEGER"
-                    + "title TEXT, "
-                    + "overview TEXT);");
+        String query = "CREATE TABLE movies(_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "mv_id INTEGER, "
+                + "title TEXT, "
+                + "overview TEXT);";
+        Log.i(TAG, query);
+        db.execSQL(query);
     }
 
     @Override
@@ -31,6 +36,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS movies");
         onCreate(db);
     }
+
 
     public void addMovie(String movieId, String title, String overview) {
         ContentValues values = new ContentValues();

@@ -20,26 +20,25 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.HttpsHandler;
 
 public class ListMovieActivity extends AppCompatActivity {
     private String TAG = ListMovieActivity.class.getSimpleName();
 
     private ProgressDialog pDialog;
-    private ListView lv;
+    private ListView listView;
 
     public static ArrayList<HashMap<String, String>> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact);
+        setContentView(R.layout.activity_list_movies);
 
         movieList = new ArrayList<>();
-        lv = (ListView) findViewById(R.id.list);
+        listView = (ListView) findViewById(R.id.list_movies);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
@@ -141,7 +140,7 @@ public class ListMovieActivity extends AppCompatActivity {
                     new String[]{"title", "overview"},
                     new int[] {R.id.title, R.id.overview}
             );
-            lv.setAdapter(adapter);
+            listView.setAdapter(adapter);
 
         }
 
