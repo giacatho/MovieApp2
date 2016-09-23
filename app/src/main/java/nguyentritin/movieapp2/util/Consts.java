@@ -11,5 +11,7 @@ public class Consts {
     public static final String NOW_PLAYING_MOVIE_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=language=en-US&api_key=" + API_KEY;
     public static final String TOP_RATED_MOVIE_URL = "https://api.themoviedb.org/3/movie/top_rated?api_key=language=en-US&api_key=" + API_KEY;
     public static final String POPULAR_MOVIE_URL = "https://api.themoviedb.org/3/movie/popular?api_key=language=en-US&api_key=" + API_KEY;
+
+    public static final String POSTER_ROOT = "http://image.tmdb.org/t/p/w300_and_h450_bestv2";
 }
 

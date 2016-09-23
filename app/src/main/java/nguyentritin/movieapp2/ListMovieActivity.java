@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import nguyentritin.movieapp2.adapter.MovieListAdapter;
 import nguyentritin.movieapp2.util.HttpsHandler;
 
 public class ListMovieActivity extends AppCompatActivity {
@@ -89,12 +90,14 @@ public class ListMovieActivity extends AppCompatActivity {
                         String title = mv.getString("title");
                         String originalTitle = mv.getString("original_title");
                         String overview = mv.getString("overview");
+                        String posterPath = mv.getString("poster_path");
 
                         HashMap<String, String> movie = new HashMap<>();
                         movie.put("id", id);
                         movie.put("title", title);
                         movie.put("original_title", originalTitle);
                         movie.put("overview", overview);
+                        movie.put("poster_path", posterPath);
 
                         movieList.add(movie);
                     }
@@ -133,13 +136,7 @@ public class ListMovieActivity extends AppCompatActivity {
                 pDialog.dismiss();
 
             // Update ListView
-            ListAdapter adapter = new SimpleAdapter(
-                    ListMovieActivity.this,
-                    movieList,
-                    R.layout.list_movie_item,
-                    new String[]{"title", "overview"},
-                    new int[] {R.id.title, R.id.overview}
-            );
+            ListAdapter adapter = new MovieListAdapter(ListMovieActivity.this, movieList);
             listView.setAdapter(adapter);
 
         }

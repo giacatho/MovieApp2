@@ -39,6 +39,7 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
             }
         });
 
+
         try {
             SQLiteOpenHelper dbHelper = new MovieDatabaseHelper(this);
             db = dbHelper.getReadableDatabase();
