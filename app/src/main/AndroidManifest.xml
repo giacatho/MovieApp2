@@ -23,7 +23,7 @@
         </activity>
         <activity android:name=".ListMovieActivity" />
         <activity android:name=".MovieDetailActivity" />
-        <activity android:name=".ListFavoriteMovieActivity"></activity>
+        <activity android:name=".ListFavoriteMovieActivity" />
     </application>
 
 </manifest>
