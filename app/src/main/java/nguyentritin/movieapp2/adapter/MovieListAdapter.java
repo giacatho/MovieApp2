@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.androidhive.ImageLoader;
+import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,13 +30,11 @@ public class MovieListAdapter extends BaseAdapter {
     private Activity activity;
     private static LayoutInflater inflater = null;
     private List<HashMap<String, String>> movieList;
-    public ImageLoader imageLoader;
 
     public MovieListAdapter(Activity activity, List<HashMap<String, String>> movieList) {
         this.activity = activity;
         this.movieList = movieList;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader = new ImageLoader(activity.getApplicationContext());
     }
 
     @Override
@@ -65,7 +63,7 @@ public class MovieListAdapter extends BaseAdapter {
         TextView title = (TextView) view.findViewById(R.id.title);
         TextView overview = (TextView) view.findViewById(R.id.overview);
         TextView rating = (TextView) view.findViewById(R.id.rating);
-        ImageView posterImage = (ImageView) view.findViewById(R.id.poster_image);
+        ImageView posterImageView = (ImageView) view.findViewById(R.id.poster_image);
 
         Map<String, String> movie = movieList.get(position);
 
@@ -75,10 +73,9 @@ public class MovieListAdapter extends BaseAdapter {
         rating.setText("Temporary");
 
         if (movie.get("poster_path") == null || movie.get("poster_path").equals("null")) {
-            posterImage.setImageResource(R.mipmap.default_poster);
+            posterImageView.setImageResource(R.mipmap.default_poster);
         } else {
-            imageLoader.DisplayImage(Consts.POSTER_ROOT + movie.get("poster_path"),
-                    R.mipmap.ic_launcher, posterImage);
+            Glide.with(activity).load(Consts.POSTER_ROOT + movie.get("poster_path")).into(posterImageView);
         }
 
         return view;

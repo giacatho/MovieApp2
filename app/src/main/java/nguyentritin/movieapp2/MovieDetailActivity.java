@@ -3,6 +3,7 @@ package nguyentritin.movieapp2;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ListMenuItemView;
@@ -52,12 +53,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         searchTrailerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // http://stackoverflow.com/questions/9860456/search-a-specific-string-in-youtube-application-from-my-app
-                Intent intent = new Intent(Intent.ACTION_SEARCH);
-                intent.setPackage("com.google.android.youtube");
-                intent.putExtra("query", movie.get("title") + " trailer official");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                String query = movie.get("title") + " trailer official";
+                try {
+                    // Try open the Youtube app
+                    // http://stackoverflow.com/questions/9860456/search-a-specific-string-in-youtube-application-from-my-app
+                    Intent intent = new Intent(Intent.ACTION_SEARCH);
+                    intent.setPackage("com.google.android.youtube");
+                    intent.putExtra("query", movie.get("title") + " trailer official");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    // Youtube has fail, now try to open a Browser
+                    try {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.youtube.com/results?search_query=test+me"));
+                        startActivity(browserIntent);
+                    } catch (Exception e1) {
+                        Toast.makeText(MovieDetailActivity.this, "Your phone does not support this feature.", Toast.LENGTH_LONG);
+                    }
+                }
             }
         });
     }
