@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startListMovieActivity(String url) {
-        Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
+        //Intent intent = new Intent(MainActivity.this, ListMovieActivity.class);
+        Intent intent = new Intent(MainActivity.this, GridMovieActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);
     }
