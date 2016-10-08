@@ -63,6 +63,8 @@ public class MovieGridAdapter extends BaseAdapter {
         Map<String, String> movie = movieList.get(position);
         if (movie.get("poster_path") != null && !movie.get("poster_path").equals("null")) {
             Glide.with(activity).load(Consts.POSTER_ROOT + movie.get("poster_path")).into(posterImageView);
+        } else {
+            Glide.with(activity).load(R.mipmap.default_poster).into(posterImageView);
         }
 
         return posterImageView;
