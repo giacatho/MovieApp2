@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -29,6 +31,15 @@ public class GridMovieActivity extends AppCompatActivity implements GetMoviesDel
         setContentView(R.layout.activity_grid_movies);
 
         gridView = (GridView) findViewById(R.id.gridView);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(GridMovieActivity.this, MovieDetailActivity.class);
+                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
         GetMovies getMovies = new GetMovies();
@@ -61,7 +72,7 @@ public class GridMovieActivity extends AppCompatActivity implements GetMoviesDel
         if (pDialog.isShowing())
             pDialog.dismiss();
 
-        this.movieList = movies;
+        movieList = movies;
         // Update ListView
         ListAdapter adapter = new MovieGridAdapter(this, movieList);
         gridView.setAdapter(adapter);

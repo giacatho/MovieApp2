@@ -24,7 +24,8 @@
         <activity android:name=".ListMovieActivity" />
         <activity android:name=".MovieDetailActivity" />
         <activity android:name=".ListFavoriteMovieActivity" />
-        <activity android:name=".GridMovieActivity"></activity>
+        <activity android:name=".GridMovieActivity" />
+        <activity android:name=".UserSettingsActivity"></activity>
     </application>
 
 </manifest>

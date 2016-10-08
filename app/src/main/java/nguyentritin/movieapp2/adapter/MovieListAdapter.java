@@ -56,27 +56,27 @@ public class MovieListAdapter extends BaseAdapter {
         View view;
         if (convertView == null) {
             view = inflater.inflate(R.layout.list_movie_item, null);
-            TextView title = (TextView) view.findViewById(R.id.title);
-            TextView overview = (TextView) view.findViewById(R.id.overview);
-            TextView rating = (TextView) view.findViewById(R.id.rating);
-            ImageView posterImageView = (ImageView) view.findViewById(R.id.poster_image);
-
-            Map<String, String> movie = movieList.get(position);
-
-            title.setText(movie.get("title"));
-            overview.setText(movie.get("overview"));
-            // TODO
-            rating.setText("Temporary");
-
-            if (movie.get("poster_path") == null || movie.get("poster_path").equals("null")) {
-                posterImageView.setImageResource(R.mipmap.default_poster);
-            } else {
-                Glide.with(activity).load(Consts.POSTER_ROOT + movie.get("poster_path")).into(posterImageView);
-            }
-
         }
         else {
             view = convertView;
+        }
+
+        TextView title = (TextView) view.findViewById(R.id.title);
+        TextView overview = (TextView) view.findViewById(R.id.overview);
+        TextView rating = (TextView) view.findViewById(R.id.rating);
+        ImageView posterImageView = (ImageView) view.findViewById(R.id.poster_image);
+
+        Map<String, String> movie = movieList.get(position);
+
+        title.setText(movie.get("title"));
+        overview.setText(movie.get("overview"));
+        // TODO
+        rating.setText("Temporary");
+
+        if (movie.get("poster_path") == null || movie.get("poster_path").equals("null")) {
+            posterImageView.setImageResource(R.mipmap.default_poster);
+        } else {
+            Glide.with(activity).load(Consts.POSTER_ROOT + movie.get("poster_path")).into(posterImageView);
         }
 
         return view;

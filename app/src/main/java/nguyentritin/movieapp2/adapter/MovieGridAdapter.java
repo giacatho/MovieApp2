@@ -54,7 +54,6 @@ public class MovieGridAdapter extends BaseAdapter {
 
         if (convertView == null) {
             posterImageView = new ImageView(activity);
-            posterImageView.setLayoutParams(new GridView.LayoutParams(400, 400));
         } else {
             posterImageView = (ImageView) convertView;
         }

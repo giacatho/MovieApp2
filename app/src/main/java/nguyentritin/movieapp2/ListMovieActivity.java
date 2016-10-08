@@ -2,19 +2,21 @@ package nguyentritin.movieapp2;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nguyentritin.movieapp2.adapter.MovieGridAdapter;
 import nguyentritin.movieapp2.adapter.MovieListAdapter;
 import nguyentritin.movieapp2.util.GetMovies;
 import nguyentritin.movieapp2.util.GetMoviesDelegate;
@@ -24,6 +26,7 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
 
     private ProgressDialog pDialog;
     private ListView listView;
+    private GridView gridView;
 
     public static List<Map<String, String>> movieList;
 
@@ -32,22 +35,45 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_movies);
 
+        gridView = (GridView) findViewById(R.id.gridView);
         listView = (ListView) findViewById(R.id.list_movies);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
-                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
-                startActivity(intent);
-            }
-        });
+        if (isDisplayAsGrid()) {
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
+                    intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
+                    startActivity(intent);
+                }
+            });
+
+            listView.setVisibility(View.GONE);
+        } else {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
+                    intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
+                    startActivity(intent);
+                }
+            });
+
+            gridView.setVisibility(View.GONE);
+        }
 
         Intent intent = getIntent();
         GetMovies getMovies = new GetMovies();
         getMovies.setUrl(intent.getStringExtra("url"));
         getMovies.setDelegate(this);
         getMovies.execute();
+    }
+
+    private boolean isDisplayAsGrid() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return sharedPrefs.getBoolean("prefDisplayMoviesAsGrid", false);
     }
 
     @Override
@@ -74,10 +100,16 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
         if (pDialog.isShowing())
             pDialog.dismiss();
 
-        this.movieList = movies;
-        // Update ListView
-        ListAdapter adapter = new MovieListAdapter(this, movieList);
-        listView.setAdapter(adapter);
+        movieList = movies;
+
+        // Update ListView or GridView
+        if (isDisplayAsGrid()) {
+            MovieGridAdapter adapter = new MovieGridAdapter(this, movieList);
+            gridView.setAdapter(adapter);
+        } else {
+            ListAdapter adapter = new MovieListAdapter(this, movieList);
+            listView.setAdapter(adapter);
+        }
     }
 
 
