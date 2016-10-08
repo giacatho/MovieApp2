@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:title="MovieApp"
+        android:summary="\@2016 TinNguyen">
+    </Preference>
+
+    <Preference
+        android:title="Version"
+        android:summary="0.2">
+    </Preference>
+
+    <Preference
+        android:title="Instruction Video" >
+        <intent
+            android:targetPackage="nguyentritin.movieapp2"
+            android:targetClass="nguyentritin.movieapp2.InstructionVideoActivity"/>
+            </Preference>
+</PreferenceScreen>

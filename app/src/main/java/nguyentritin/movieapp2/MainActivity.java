@@ -91,14 +91,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i;
+
         int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                i = new Intent(this, UserSettingsActivity.class);
+                startActivity(i);
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(this, UserSettingsActivity.class);
-            startActivity(i);
-
-            return true;
+            case R.id.action_about:
+                i = new Intent(this, AboutActivity.class);
+                startActivity(i);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
