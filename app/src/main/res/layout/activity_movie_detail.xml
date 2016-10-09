@@ -43,14 +43,15 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/movie_release_date_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Released Date"
-                    android:id="@+id/movie_release_date_label" />
+                     />
                 <TextView
+                    android:id="@+id/movie_release_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/movie_release_date"
                     android:text="14/02/2016" />
             </LinearLayout>
 
@@ -66,13 +67,15 @@
                 android:layout_alignBottom="@+id/scrollView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="40dp"
                 android:gravity="center">
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_favor_btn"
-                    android:text="Add to my favorite" />
+                    android:text="Add to my favorite"
+                    android:visibility="gone"/>
 
                 <Button
                     android:layout_width="wrap_content"

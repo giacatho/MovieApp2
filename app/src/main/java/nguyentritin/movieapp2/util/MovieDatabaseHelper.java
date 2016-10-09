@@ -52,4 +52,22 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public boolean isFavoriteMovie(String movieId) {
+        boolean result;
+
+        String query = "SELECT * FROM " + Consts.DB_TBL_NAME +
+                " WHERE " + Consts.DB_COL_MOVIE_ID + " = '" + movieId + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst())
+            result = true;
+        else
+            result = false;
+
+        db.close();
+
+        return result;
+    }
+
 }

@@ -3,6 +3,7 @@ package nguyentritin.movieapp2;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
 import nguyentritin.movieapp2.model.Movie;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
@@ -26,12 +28,15 @@ public class MovieDetailActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE_POSITION = "position";
     public static final String EXTRA_MOVIE = "movie";
 
+    MovieDatabaseHelper movieDatabaseHelper;
     private Map<String, String> movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+
+        movieDatabaseHelper = new MovieDatabaseHelper(this);
 
         String fromActivity = getIntent().getExtras().getString(EXTRA_FROM_ACTIVITY);
         if (ListMovieActivity.class.getSimpleName().equals(fromActivity)){
@@ -47,22 +52,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
         TextView titleView = (TextView) findViewById(R.id.title);
-        titleView.setText(movie.get("title"));
+        titleView.setText(movie.get(Consts.DB_COL_TITLE));
 
         TextView overviewView = (TextView) findViewById(R.id.overview);
-        overviewView.setText(movie.get("overview"));
+        overviewView.setText(movie.get(Consts.DB_COL_OVERVIEW));
 
-        Button favorButton = (Button) findViewById(R.id.detail_favor_btn);
+        final Button favorButton = (Button) findViewById(R.id.detail_favor_btn);
         favorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    MovieDatabaseHelper helper = new MovieDatabaseHelper(MovieDetailActivity.this);
-                    helper.addMovie(movie.get(Consts.DB_COL_MOVIE_ID),
+                    movieDatabaseHelper.addMovie(movie.get(Consts.DB_COL_MOVIE_ID),
                             movie.get(Consts.DB_COL_TITLE),
                             movie.get(Consts.DB_COL_OVERVIEW),
                             movie.get(Consts.DB_COL_POSTER_PATH));
-                    Toast.makeText(getApplicationContext(), "Movie is added to your favorite list.",
+                    favorButton.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "This movie has been successfully added to your favorite list.",
                             Toast.LENGTH_SHORT).show();
                 } catch (SQLiteException e) {
                     Toast.makeText(MovieDetailActivity.this, "DB error: " + e.getMessage(),
@@ -98,6 +103,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Display Add To Favorite Button if this movie is not in the database
+        if (!movieDatabaseHelper.isFavoriteMovie(movie.get(Consts.DB_COL_MOVIE_ID))) {
+            favorButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private Map<String, String> getMovieFromBundle(Bundle bundle) {
