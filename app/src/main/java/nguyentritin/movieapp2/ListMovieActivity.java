@@ -42,9 +42,7 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
-                    intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
-                    startActivity(intent);
+                    callMovieDetailActivity(id);
                 }
             });
 
@@ -53,9 +51,7 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
-                    intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
-                    startActivity(intent);
+                    callMovieDetailActivity(id);
                 }
             });
 
@@ -67,6 +63,13 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
         getMovies.setUrl(intent.getStringExtra("url"));
         getMovies.setDelegate(this);
         getMovies.execute();
+    }
+
+    private void callMovieDetailActivity(long id) {
+        Intent intent = new Intent(ListMovieActivity.this, MovieDetailActivity.class);
+        intent.putExtra(MovieDetailActivity.EXTRA_FROM_ACTIVITY, ListMovieActivity.class.getSimpleName());
+        intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_POSITION, (int) id);
+        startActivity(intent);
     }
 
     private boolean isDisplayAsGrid() {

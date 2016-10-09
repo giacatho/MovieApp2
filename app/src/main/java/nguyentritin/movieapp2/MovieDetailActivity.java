@@ -12,14 +12,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import nguyentritin.movieapp2.model.Movie;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 
 public class MovieDetailActivity extends AppCompatActivity {
+    public static final String EXTRA_FROM_ACTIVITY = "from_activity";
     public static final String EXTRA_MOVIE_POSITION = "position";
+    public static final String EXTRA_MOVIE = "movie";
+
     private Map<String, String> movie;
 
     @Override
@@ -27,8 +32,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        int position = getIntent().getExtras().getInt(EXTRA_MOVIE_POSITION);
-        movie = ListMovieActivity.movieList.get(position);
+        String fromActivity = getIntent().getExtras().getString(EXTRA_FROM_ACTIVITY);
+        if (ListMovieActivity.class.getSimpleName().equals(fromActivity)){
+            int position = getIntent().getExtras().getInt(EXTRA_MOVIE_POSITION);
+            movie = ListMovieActivity.movieList.get(position);
+        } else if (ListFavoriteMovieActivity.class.getSimpleName().equals(fromActivity)){
+            Bundle bundle = getIntent().getExtras().getBundle(EXTRA_MOVIE);
+            movie = getMovieFromBundle(bundle);
+        } else {
+            Toast.makeText(this, "Wrong state. This activity should be called from others.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         TextView titleView = (TextView) findViewById(R.id.title);
         titleView.setText(movie.get("title"));
@@ -77,5 +91,16 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private Map<String, String> getMovieFromBundle(Bundle bundle) {
+        Map<String, String> movie = new HashMap<>();
+
+        Set<String> keys = bundle.keySet();
+        for (String key: keys) {
+            movie.put(key, bundle.getString(key));
+        }
+
+        return movie;
     }
 }
