@@ -1,11 +1,13 @@
 package nguyentritin.movieapp2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +31,8 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
 
     private ListView listView;
     private CursorAdapter cursorAdapter;
+
+    private int orderBy = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,44 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
             }
         });
 
+        // When long pressing the row, call for deletion
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Cursor cursor = ((CursorAdapter)listView.getAdapter()).getCursor();
+                cursor.moveToPosition(position);
+
+                final String movieId = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_MOVIE_ID));
+
+                // http://stackoverflow.com/a/5344958
+                // Prompt user
+                AlertDialog.Builder alert = new AlertDialog.Builder(ListFavoriteMovieActivity.this);
+
+                alert.setTitle("Warning");
+                alert.setMessage("Do you want to remove the selected movie from your favorite list?");
+
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Do nothing
+                    }
+                });
+
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Remove movie from favorite list
+                        db.delete(Consts.DB_TBL_NAME, Consts.DB_COL_MOVIE_ID + " = ?",
+                                new String[] { String.valueOf(movieId) });
+
+                        updateQueryCursor();
+                    }
+                });
+
+                alert.show();
+
+                return true;
+            }
+        });
+
         try {
             SQLiteOpenHelper dbHelper = new MovieDatabaseHelper(this);
             db = dbHelper.getReadableDatabase();
@@ -79,8 +121,8 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
     }
 
     // Trigger a new query and update cursor
-    public void updateQueryCursor(int orderBy) {
-        switch (orderBy)
+    public void updateQueryCursor() {
+        switch (this.orderBy)
         {
             case R.id.menu_order_by_title:
                 favoriteCursor = db.query(Consts.DB_TBL_NAME,
@@ -128,12 +170,14 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_order_by_title:
                 item.setChecked(true);
-                updateQueryCursor(R.id.menu_order_by_title);
+                this.orderBy = R.id.menu_order_by_title;
+                updateQueryCursor();
                 return true;
 
             case R.id.menu_order_by_favorite_date:
                 item.setChecked(true);
-                updateQueryCursor(R.id.menu_order_by_favorite_date);
+                this.orderBy = R.id.menu_order_by_favorite_date;
+                updateQueryCursor();
                 return true;
         }
 
