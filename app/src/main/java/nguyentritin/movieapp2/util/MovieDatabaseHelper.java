@@ -15,7 +15,7 @@ import android.util.Log;
 public class MovieDatabaseHelper extends SQLiteOpenHelper {
     public static String TAG = MovieDatabaseHelper.class.getSimpleName();
 
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
 
     public MovieDatabaseHelper(Context context) {
         super(context, Consts.DB_NAME, null, DB_VERSION);
@@ -27,7 +27,8 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
                 + Consts.DB_COL_MOVIE_ID + " TEXT, "
                 + Consts.DB_COL_TITLE + " TEXT, "
                 + Consts.DB_COL_OVERVIEW + " TEXT, "
-                + Consts.DB_COL_POSTER_PATH + " TEXT);";
+                + Consts.DB_COL_POSTER_PATH + " TEXT, "
+                + Consts.DB_COL_FAVORITE_TIMESTAMP + " INTEGER);";
         Log.i(TAG, query);
         db.execSQL(query);
     }
@@ -44,6 +45,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         values.put(Consts.DB_COL_TITLE, title);
         values.put(Consts.DB_COL_OVERVIEW, overview);
         values.put(Consts.DB_COL_POSTER_PATH, posterPath);
+        values.put(Consts.DB_COL_FAVORITE_TIMESTAMP, System.currentTimeMillis() / 1000L);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(Consts.DB_TBL_NAME, null, values);

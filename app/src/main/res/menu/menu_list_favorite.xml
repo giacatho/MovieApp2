@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Order By"
+        app:showAsAction="ifRoom|withText">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_order_by_title"
+                    android:title="Title"
+                    android:orderInCategory="1"
+                    app:showAsAction="never" />
+                <item
+                    android:id="@+id/menu_order_by_favorite_date"
+                    android:title="Favorite Date"
+                    android:orderInCategory="2"
+                    app:showAsAction="never" />
+            </group>
+        </menu>
+    </item>
+</menu>

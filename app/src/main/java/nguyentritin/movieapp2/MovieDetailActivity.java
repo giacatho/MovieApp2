@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -40,7 +41,8 @@ public class MovieDetailActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras().getBundle(EXTRA_MOVIE);
             movie = getMovieFromBundle(bundle);
         } else {
-            Toast.makeText(this, "Wrong state. This activity should be called from others.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Wrong state. This activity should be called from others.",
+                    Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -60,9 +62,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                             movie.get(Consts.DB_COL_TITLE),
                             movie.get(Consts.DB_COL_OVERVIEW),
                             movie.get(Consts.DB_COL_POSTER_PATH));
-                    Toast.makeText(getApplicationContext(), "Movie is added to your favorite list.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Movie is added to your favorite list.",
+                            Toast.LENGTH_SHORT).show();
                 } catch (SQLiteException e) {
-                    Toast.makeText(MovieDetailActivity.this, "DB error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MovieDetailActivity.this, "DB error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -83,10 +87,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     // Youtube has fail, now try to open a Browser
                     try {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.youtube.com/results?search_query=test+me"));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                                "https://m.youtube.com/results?search_query=" +
+                                        URLEncoder.encode(query, "utf-8")));
                         startActivity(browserIntent);
                     } catch (Exception e1) {
-                        Toast.makeText(MovieDetailActivity.this, "Your phone does not support this feature.", Toast.LENGTH_LONG);
+                        Toast.makeText(MovieDetailActivity.this,
+                                "Your phone does not support this feature.", Toast.LENGTH_LONG);
                     }
                 }
             }

@@ -44,12 +44,14 @@ public class MovieItemCursorAdapter extends CursorAdapter {
         String title = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_TITLE));
         String overview = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_OVERVIEW));
         String posterPath = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_POSTER_PATH));
+        Long favoriteTS = cursor.getLong(cursor.getColumnIndex(Consts.DB_COL_FAVORITE_TIMESTAMP));
 
         titleView.setText(title);
         overviewView.setText(overview);
+        ratingView.setText(favoriteTS + "");
 
         // TODO
-        ratingView.setText("Temporary");
+        //ratingView.setText("Temporary");
 
         if (posterPath == null || posterPath.equals("null")) {
             posterImageView.setImageResource(R.mipmap.default_poster);

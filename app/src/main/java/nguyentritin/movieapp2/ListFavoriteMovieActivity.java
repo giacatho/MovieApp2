@@ -6,28 +6,29 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 
 // http://www.tutorialsbuzz.com/2013/11/android-sqlite-database-with.html
+// Menu Group: http://stackoverflow.com/questions/15851920/how-do-i-add-a-title-to-my-menu-group
 public class ListFavoriteMovieActivity extends AppCompatActivity {
 
     private SQLiteDatabase db;
     private Cursor favoriteCursor;
 
     private ListView listView;
+    private CursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +65,79 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
         try {
             SQLiteOpenHelper dbHelper = new MovieDatabaseHelper(this);
             db = dbHelper.getReadableDatabase();
+
             favoriteCursor = db.query(Consts.DB_TBL_NAME,
-                    new String[] {"_id", Consts.DB_COL_MOVIE_ID, Consts.DB_COL_TITLE, Consts.DB_COL_OVERVIEW, Consts.DB_COL_POSTER_PATH},
+                    getQueryColumns(),
                     null,
                     null, null, null, null);
-
-            CursorAdapter favoriteAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
-
-            listView.setAdapter(favoriteAdapter);
+            cursorAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
+            listView.setAdapter(cursorAdapter);
 
         } catch (SQLiteException e) {
             Toast.makeText(this, "Database error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    // Trigger a new query and update cursor
+    public void updateQueryCursor(int orderBy) {
+        switch (orderBy)
+        {
+            case R.id.menu_order_by_title:
+                favoriteCursor = db.query(Consts.DB_TBL_NAME,
+                        getQueryColumns(),
+                        null,
+                        null, null, null, Consts.DB_COL_TITLE);
+                break;
+
+            case R.id.menu_order_by_favorite_date:
+                favoriteCursor = db.query(Consts.DB_TBL_NAME,
+                        getQueryColumns(),
+                        null,
+                        null, null, null, Consts.DB_COL_FAVORITE_TIMESTAMP + " DESC");
+                break;
+
+            default:
+                favoriteCursor = db.query(Consts.DB_TBL_NAME,
+                        getQueryColumns(),
+                        null,
+                        null, null, null, null);
+                break;
+
+        }
+
+        cursorAdapter.changeCursor(favoriteCursor);
+    }
+
+    private String[] getQueryColumns() {
+        return new String[] {"_id",
+                Consts.DB_COL_MOVIE_ID,
+                Consts.DB_COL_TITLE,
+                Consts.DB_COL_OVERVIEW,
+                Consts.DB_COL_POSTER_PATH,
+                Consts.DB_COL_FAVORITE_TIMESTAMP};
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_list_favorite, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_order_by_title:
+                item.setChecked(true);
+                updateQueryCursor(R.id.menu_order_by_title);
+                return true;
+
+            case R.id.menu_order_by_favorite_date:
+                item.setChecked(true);
+                updateQueryCursor(R.id.menu_order_by_favorite_date);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

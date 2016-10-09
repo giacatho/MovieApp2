@@ -18,6 +18,7 @@ public class Consts {
     public static final String DB_COL_TITLE = "title";
     public static final String DB_COL_OVERVIEW = "overview";
     public static final String DB_COL_POSTER_PATH = "poster_path";
+    public static final String DB_COL_FAVORITE_TIMESTAMP = "f_timestamp";
 
 
     public static final String POSTER_ROOT = "http://image.tmdb.org/t/p/w300_and_h450_bestv2";
