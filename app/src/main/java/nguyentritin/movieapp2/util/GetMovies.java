@@ -57,18 +57,18 @@ public class GetMovies extends AsyncTask<Void, Void, Void> {
                 for (int i = 0; i < movies.length(); i++) {
                     JSONObject mv = movies.getJSONObject(i);
 
-                    String id = mv.getString("id");
-                    String title = mv.getString("title");
+                    String id = mv.getString(Consts.DB_COL_MOVIE_ID);
+                    String title = mv.getString(Consts.DB_COL_TITLE);
                     String originalTitle = mv.getString("original_title");
-                    String overview = mv.getString("overview");
-                    String posterPath = mv.getString("poster_path");
+                    String overview = mv.getString(Consts.DB_COL_OVERVIEW);
+                    String posterPath = mv.getString(Consts.DB_COL_POSTER_PATH);
 
                     HashMap<String, String> movie = new HashMap<>();
-                    movie.put("id", id);
-                    movie.put("title", title);
+                    movie.put(Consts.DB_COL_MOVIE_ID, id);
+                    movie.put(Consts.DB_COL_TITLE, title);
                     movie.put("original_title", originalTitle);
-                    movie.put("overview", overview);
-                    movie.put("poster_path", posterPath);
+                    movie.put(Consts.DB_COL_OVERVIEW, overview);
+                    movie.put(Consts.DB_COL_POSTER_PATH, posterPath);
 
                     movieList.add(movie);
                 }

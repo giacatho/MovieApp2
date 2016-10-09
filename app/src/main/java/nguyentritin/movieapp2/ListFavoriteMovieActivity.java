@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
+import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 
 public class ListFavoriteMovieActivity extends AppCompatActivity {
@@ -43,16 +45,19 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
         try {
             SQLiteOpenHelper dbHelper = new MovieDatabaseHelper(this);
             db = dbHelper.getReadableDatabase();
-            favoriteCursor = db.query("movies",
-                    new String[] {"_id", "title", "overview"},
+            favoriteCursor = db.query(Consts.DB_TBL_NAME,
+                    new String[] {"_id", Consts.DB_COL_TITLE, Consts.DB_COL_OVERVIEW, Consts.DB_COL_POSTER_PATH},
                     null,
                     null, null, null, null);
-            CursorAdapter favoriteAdapter = new SimpleCursorAdapter(ListFavoriteMovieActivity.this,
-                    R.layout.list_movie_item,
-                    favoriteCursor,
-                    new String[]{"title", "overview"},
-                    new int[] {R.id.title, R.id.overview}
-            );
+
+//            CursorAdapter favoriteAdapter = new SimpleCursorAdapter(ListFavoriteMovieActivity.this,
+//                    R.layout.list_movie_item,
+//                    favoriteCursor,
+//                    new String[]{"title", "overview"},
+//                    new int[] {R.id.title, R.id.overview}
+//            );
+
+            CursorAdapter favoriteAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
 
             listView.setAdapter(favoriteAdapter);
         } catch (SQLiteException e) {

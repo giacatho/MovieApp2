@@ -14,38 +14,39 @@ import android.util.Log;
 
 public class MovieDatabaseHelper extends SQLiteOpenHelper {
     public static String TAG = MovieDatabaseHelper.class.getSimpleName();
-    private static final String DB_NAME = "movie";
-    private static final int DB_VERSION = 2;
+
+    private static final int DB_VERSION = 4;
 
     public MovieDatabaseHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, Consts.DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE movies(_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "mv_id INTEGER, "
-                + "title TEXT, "
-                + "overview TEXT);";
+        String query = "CREATE TABLE " + Consts.DB_TBL_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Consts.DB_COL_MOVIE_ID + " TEXT, "
+                + Consts.DB_COL_TITLE + " TEXT, "
+                + Consts.DB_COL_OVERVIEW + " TEXT, "
+                + Consts.DB_COL_POSTER_PATH + " TEXT);";
         Log.i(TAG, query);
         db.execSQL(query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS movies");
+        db.execSQL("DROP TABLE IF EXISTS " + Consts.DB_TBL_NAME);
         onCreate(db);
     }
 
-
-    public void addMovie(String movieId, String title, String overview) {
+    public void addMovie(String movieId, String title, String overview, String posterPath) {
         ContentValues values = new ContentValues();
-        values.put("mv_id", movieId);
-        values.put("title", title);
-        values.put("overview", overview);
+        values.put(Consts.DB_COL_MOVIE_ID, movieId);
+        values.put(Consts.DB_COL_TITLE, title);
+        values.put(Consts.DB_COL_OVERVIEW, overview);
+        values.put(Consts.DB_COL_POSTER_PATH, posterPath);
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert("movies", null, values);
+        db.insert(Consts.DB_TBL_NAME, null, values);
         db.close();
     }
 

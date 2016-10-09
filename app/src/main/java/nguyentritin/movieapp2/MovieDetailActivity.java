@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.Map;
 
 import nguyentritin.movieapp2.model.Movie;
+import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -41,7 +42,10 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     MovieDatabaseHelper helper = new MovieDatabaseHelper(MovieDetailActivity.this);
-                    helper.addMovie(movie.get("id"), movie.get("title"), movie.get("overview"));
+                    helper.addMovie(movie.get(Consts.DB_COL_MOVIE_ID),
+                            movie.get(Consts.DB_COL_TITLE),
+                            movie.get(Consts.DB_COL_OVERVIEW),
+                            movie.get(Consts.DB_COL_POSTER_PATH));
                     Toast.makeText(getApplicationContext(), "Movie is added to your favorite list.", Toast.LENGTH_SHORT).show();
                 } catch (SQLiteException e) {
                     Toast.makeText(MovieDetailActivity.this, "DB error: " + e.getMessage(), Toast.LENGTH_LONG).show();
