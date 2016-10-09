@@ -1,5 +1,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -24,41 +25,114 @@
                 android:text="Movie Title"
                 android:textColor="@color/colorPrimaryDark"
                 android:textAlignment="center" />
-            <TextView
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rating: 3.41"/>
-            <ImageView
-                android:id="@+id/poster"
-                android:layout_width="80dip"
-                android:layout_height="120dip"
-                android:src="@mipmap/ic_launcher"
-                android:padding="16dp" />
+
             <LinearLayout
+                android:id="@+id/release_date_group"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Released: "
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14/02/2016"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="80dip"
+                android:layout_height="120dip"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tagline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Justice has a number"
+                android:visibility="gone"
+                android:paddingBottom="10dp"
+                android:textStyle="italic" />
+
+            <LinearLayout
+                android:id="@+id/rating_group"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating: "
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3.12"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/genres_group"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Genres: "
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/genres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actions, Comedy"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/production_countries_group"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/movie_release_date_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Released Date"
-                     />
+                    android:text="Country: "
+                    android:textStyle="bold"/>
                 <TextView
-                    android:id="@+id/movie_release_date"
+                    android:id="@+id/production_countries"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="14/02/2016" />
+                    android:text="Vietnam"
+                    android:textStyle="normal" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/overview"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -74,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_favor_btn"
-                    android:text="Add to my favorite"
+                    android:text="Add to My Favorite"
                     android:visibility="gone"/>
 
                 <Button
