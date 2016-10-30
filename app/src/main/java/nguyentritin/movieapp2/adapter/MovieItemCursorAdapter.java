@@ -15,6 +15,7 @@ import java.util.Map;
 
 import nguyentritin.movieapp2.R;
 import nguyentritin.movieapp2.util.Consts;
+import nguyentritin.movieapp2.util.Utils;
 
 /**
  * Created by giacatho on 10/9/16.
@@ -38,7 +39,7 @@ public class MovieItemCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView titleView = (TextView) view.findViewById(R.id.title);
         TextView overviewView = (TextView) view.findViewById(R.id.overview);
-        TextView ratingView = (TextView) view.findViewById(R.id.rating);
+        TextView favoriteDateView = (TextView) view.findViewById(R.id.favorite_date);
         ImageView posterImageView = (ImageView) view.findViewById(R.id.poster_image);
 
         String title = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_TITLE));
@@ -47,11 +48,9 @@ public class MovieItemCursorAdapter extends CursorAdapter {
         Long favoriteTS = cursor.getLong(cursor.getColumnIndex(Consts.DB_COL_FAVORITE_TIMESTAMP));
 
         titleView.setText(title);
-        overviewView.setText(overview);
-        ratingView.setText(favoriteTS + "");
-
-        // TODO
-        //ratingView.setText("Temporary");
+        overviewView.setText(Utils.getShortOverviewStr(overview));
+        favoriteDateView.setVisibility(View.VISIBLE);
+        favoriteDateView.setText(Utils.getDateFromUnixTS(favoriteTS));
 
         if (posterPath == null || posterPath.equals("null")) {
             posterImageView.setImageResource(R.mipmap.default_poster);

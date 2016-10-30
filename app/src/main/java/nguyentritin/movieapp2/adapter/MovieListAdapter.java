@@ -17,6 +17,7 @@ import java.util.Map;
 
 import nguyentritin.movieapp2.R;
 import nguyentritin.movieapp2.util.Consts;
+import nguyentritin.movieapp2.util.Utils;
 
 /**
  * Created by giacatho on 9/24/16.
@@ -63,15 +64,12 @@ public class MovieListAdapter extends BaseAdapter {
 
         TextView title = (TextView) view.findViewById(R.id.title);
         TextView overview = (TextView) view.findViewById(R.id.overview);
-        TextView rating = (TextView) view.findViewById(R.id.rating);
         ImageView posterImageView = (ImageView) view.findViewById(R.id.poster_image);
 
         Map<String, String> movie = movieList.get(position);
 
         title.setText(movie.get("title"));
-        overview.setText(movie.get("overview"));
-        // TODO
-        rating.setText("Temporary");
+        overview.setText(Utils.getShortOverviewStr(movie.get("overview")));
 
         if (movie.get("poster_path") == null || movie.get("poster_path").equals("null")) {
             posterImageView.setImageResource(R.mipmap.default_poster);
@@ -81,6 +79,5 @@ public class MovieListAdapter extends BaseAdapter {
 
         return view;
     }
-
 
 }

@@ -20,18 +20,6 @@
             android:src="@mipmap/ic_launcher"/>
     </LinearLayout>
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/poster"
-        android:layout_toRightOf="@id/poster"
-        android:text="Movie title"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
     <!-- Overview -->
     <TextView
         android:id="@+id/overview"
@@ -43,14 +31,28 @@
         android:text="orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
         android:gravity="fill"/>
 
-    <!-- Rating -->
+    <!-- Favorite date -->
     <TextView
-        android:id="@+id/rating"
+        android:id="@+id/favorite_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/title"
-        android:text="Rating"
+        android:text="20/11/2016"
         android:layout_marginRight="5dip"
+        android:visibility="gone"
         android:textSize="10dip" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/poster"
+        android:layout_toRightOf="@id/poster"
+        android:layout_toLeftOf="@id/favorite_date"
+        android:text="Movie title"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 </RelativeLayout>
