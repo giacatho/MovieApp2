@@ -1,5 +1,8 @@
 package nguyentritin.movieapp2;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +15,14 @@ import android.os.Bundle;
 import android.support.v7.view.menu.ListMenuItemView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +46,7 @@ import nguyentritin.movieapp2.util.GetMovieDetailDelegate;
 import nguyentritin.movieapp2.util.GetMoviesDelegate;
 import nguyentritin.movieapp2.util.HttpsHandler;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
+import nguyentritin.movieapp2.util.Utils;
 
 public class MovieDetailActivity extends AppCompatActivity implements GetMovieDetailDelegate {
     public static final String EXTRA_FROM_ACTIVITY = "from_activity";
@@ -75,6 +83,15 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         TextView overviewView = (TextView) findViewById(R.id.overview);
         overviewView.setText(movie.get(Consts.DB_COL_OVERVIEW));
 
+        String posterPath = movie.get(Consts.DB_COL_POSTER_PATH);
+        ImageView posterImageView = (ImageView) findViewById(R.id.poster);
+        if (posterPath == null || posterPath.equals("null")) {
+            posterImageView.setImageResource(R.mipmap.default_poster);
+        } else {
+            Glide.with(this).load(Consts.POSTER_ROOT + posterPath).into(posterImageView);
+        }
+
+
         // Favorite button
         final Button favorButton = (Button) findViewById(R.id.detail_favor_btn);
         favorButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +102,22 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
                             movie.get(Consts.DB_COL_TITLE),
                             movie.get(Consts.DB_COL_OVERVIEW),
                             movie.get(Consts.DB_COL_POSTER_PATH));
-                    favorButton.setVisibility(View.GONE);
+
+                    // Hide the favorButton, using animation
+                    // https://www.codementor.io/tips/7812274333/android-adding-simple-animations-while-setvisibility-view-gone
+                    // http://stackoverflow.com/a/19766034
+                    favorButton.animate()
+                            .translationY(favorButton.getHeight())
+                            .alpha(0.0f)
+                            .setDuration(1500)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    favorButton.setVisibility(View.GONE);
+                                }
+                            });
+
                     Toast.makeText(getApplicationContext(), "This movie has been successfully added to your favorite list.",
                             Toast.LENGTH_SHORT).show();
                 } catch (SQLiteException e) {
@@ -100,6 +132,15 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         searchTrailerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Todo: refine the implemenation
+                // http://stackoverflow.com/a/15007494
+                ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", -100f, 0f);
+                animY.setDuration(1000); //1sec
+                animY.setInterpolator(new BounceInterpolator());
+                animY.setRepeatCount(2);
+                animY.start();
+
                 String query = movie.get("title") + " trailer official";
                 try {
                     // Try open the Youtube app
@@ -169,12 +210,12 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         View releaseDateGroup = findViewById(R.id.release_date_group);
         releaseDateGroup.setVisibility(View.VISIBLE);
         TextView releaseDateView = (TextView) findViewById(R.id.release_date);
-        releaseDateView.setText(movie.get(Consts.K_RELEASE_DATE));
+        releaseDateView.setText(Utils.getSingaporeDateFormat(movie.get(Consts.K_RELEASE_DATE)));
 
         View ratingGroup = findViewById(R.id.rating_group);
         ratingGroup.setVisibility(View.VISIBLE);
         TextView ratingView = (TextView) findViewById(R.id.rating);
-        ratingView.setText(movie.get(Consts.K_RATING));
+        ratingView.setText("0.0".equals(movie.get(Consts.K_RATING))?"N.A":movie.get(Consts.K_RATING));
 
         View genresGroup = findViewById(R.id.genres_group);
         genresGroup.setVisibility(View.VISIBLE);
