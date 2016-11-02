@@ -15,8 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import org.w3c.dom.Text;
 
 import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
 import nguyentritin.movieapp2.util.Consts;
@@ -29,6 +32,7 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     private Cursor favoriteCursor;
 
+    private TextView statusTextView;
     private ListView listView;
     private CursorAdapter cursorAdapter;
 
@@ -39,6 +43,7 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_favorite_movies);
 
+        statusTextView = (TextView) findViewById(R.id.status);
         listView = (ListView) findViewById(R.id.list_movies);
 
         // When clicking the row, call MovieDetailActivity with the Movie info.
@@ -112,9 +117,14 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
                     getQueryColumns(),
                     null,
                     null, null, null, null);
-            cursorAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
-            listView.setAdapter(cursorAdapter);
 
+            if (favoriteCursor.getCount() == 0) {
+                listView.setVisibility(View.GONE);
+            } else {
+                statusTextView.setVisibility(View.GONE);
+                cursorAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
+                listView.setAdapter(cursorAdapter);
+            }
         } catch (SQLiteException e) {
             Toast.makeText(this, "Database error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
