@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -170,11 +171,13 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
             favorButton.setVisibility(View.VISIBLE);
         }
 
-        // Start to call for more movie detail information
-        GetMovieDetail getMovieDetail = new GetMovieDetail();
-        getMovieDetail.setDelegate(this);
-        getMovieDetail.setUrl(String.format(Consts.URL_MOVIE_DETAIL, movie.get(Consts.DB_COL_MOVIE_ID)));
-        getMovieDetail.execute();
+        if (Utils.isOnline(this)) {
+            // Start to call for more movie detail information
+            GetMovieDetail getMovieDetail = new GetMovieDetail();
+            getMovieDetail.setDelegate(this);
+            getMovieDetail.setUrl(String.format(Consts.URL_MOVIE_DETAIL, movie.get(Consts.DB_COL_MOVIE_ID)));
+            getMovieDetail.execute();
+        }
     }
 
     private Map<String, String> getMovieFromBundle(Bundle bundle) {

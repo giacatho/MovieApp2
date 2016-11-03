@@ -10,6 +10,12 @@
     android:paddingTop="10dp"
     tools:context="nguyentritin.movieapp2.ListMovieActivity">
 
+    <TextView
+        android:id="@+id/status"
+        android:text="No Internet. Please turn on the Internet connection and load again."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:id="@+id/list_movies"
         android:layout_width="match_parent"

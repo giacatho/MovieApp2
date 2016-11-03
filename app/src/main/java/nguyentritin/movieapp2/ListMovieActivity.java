@@ -11,7 +11,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.util.Util;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Map;
@@ -20,11 +25,13 @@ import nguyentritin.movieapp2.adapter.MovieGridAdapter;
 import nguyentritin.movieapp2.adapter.MovieListAdapter;
 import nguyentritin.movieapp2.util.GetMovies;
 import nguyentritin.movieapp2.util.GetMoviesDelegate;
+import nguyentritin.movieapp2.util.Utils;
 
 public class ListMovieActivity extends AppCompatActivity implements GetMoviesDelegate {
     private String TAG = ListMovieActivity.class.getSimpleName();
 
     private ProgressDialog pDialog;
+    private TextView statusTextView;
     private ListView listView;
     private GridView gridView;
 
@@ -35,9 +42,19 @@ public class ListMovieActivity extends AppCompatActivity implements GetMoviesDel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_movies);
 
+        statusTextView = (TextView) findViewById(R.id.status);
         gridView = (GridView) findViewById(R.id.gridView);
         listView = (ListView) findViewById(R.id.list_movies);
 
+        if (!Utils.isOnline(this)) {
+            statusTextView.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
+
+            return;
+        }
+
+        statusTextView.setVisibility(View.GONE);
         if (isDisplayAsGrid()) {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
