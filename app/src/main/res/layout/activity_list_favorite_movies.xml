@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/status"
-        android:text="No record found."
+        android:text="No record found. Please add some movies to favorite list first."
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

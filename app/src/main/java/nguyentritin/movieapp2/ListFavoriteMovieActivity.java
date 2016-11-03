@@ -210,6 +210,7 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
 
         if (favoriteCursor.getCount() == 0) {
             listView.setVisibility(View.GONE);
+            gridView.setVisibility(View.GONE);
             statusTextView.setVisibility(View.VISIBLE);
         } else {
             if (isDisplayAsGrid()) {
