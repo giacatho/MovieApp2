@@ -2,10 +2,12 @@ package nguyentritin.movieapp2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import nguyentritin.movieapp2.adapter.MovieGridItemCursorAdapter;
 import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
@@ -34,7 +38,9 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
 
     private TextView statusTextView;
     private ListView listView;
-    private CursorAdapter cursorAdapter;
+    private GridView gridView;
+    private CursorAdapter listCursorAdapter;
+    private CursorAdapter gridCursorAdapter;
 
     private int orderBy = -1;
 
@@ -45,6 +51,7 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
 
         statusTextView = (TextView) findViewById(R.id.status);
         listView = (ListView) findViewById(R.id.list_movies);
+        gridView = (GridView) findViewById(R.id.grid_movides);
 
         // When clicking the row, call MovieDetailActivity with the Movie info.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -53,21 +60,17 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
                 Cursor cursor = ((CursorAdapter)listView.getAdapter()).getCursor();
                 cursor.moveToPosition(position);
 
-                String movieId = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_MOVIE_ID));
-                String title = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_TITLE));
-                String overview = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_OVERVIEW));
-                String posterPath = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_POSTER_PATH));
+                callMovieDetail(cursor);
+            }
+        });
 
-                Bundle movie = new Bundle();
-                movie.putString(Consts.DB_COL_MOVIE_ID, movieId);
-                movie.putString(Consts.DB_COL_TITLE, title);
-                movie.putString(Consts.DB_COL_OVERVIEW, overview);
-                movie.putString(Consts.DB_COL_POSTER_PATH, posterPath);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Cursor cursor = ((CursorAdapter)gridView.getAdapter()).getCursor();
+                cursor.moveToPosition(position);
 
-                Intent intent = new Intent(ListFavoriteMovieActivity.this, MovieDetailActivity.class);
-                intent.putExtra(MovieDetailActivity.EXTRA_FROM_ACTIVITY, ListFavoriteMovieActivity.class.getSimpleName());
-                intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
-                startActivity(intent);
+                callMovieDetail(cursor);
             }
         });
 
@@ -78,32 +81,19 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
                 Cursor cursor = ((CursorAdapter)listView.getAdapter()).getCursor();
                 cursor.moveToPosition(position);
 
-                final String movieId = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_MOVIE_ID));
+                confirmDeleteFavorite(cursor);
 
-                // http://stackoverflow.com/a/5344958
-                // Prompt user
-                AlertDialog.Builder alert = new AlertDialog.Builder(ListFavoriteMovieActivity.this);
+                return true;
+            }
+        });
 
-                alert.setTitle("Warning");
-                alert.setMessage("Do you want to remove the selected movie from your favorite list?");
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Cursor cursor = ((CursorAdapter)gridView.getAdapter()).getCursor();
+                cursor.moveToPosition(position);
 
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing
-                    }
-                });
-
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Remove movie from favorite list
-                        db.delete(Consts.DB_TBL_NAME, Consts.DB_COL_MOVIE_ID + " = ?",
-                                new String[] { String.valueOf(movieId) });
-
-                        updateQueryCursor();
-                    }
-                });
-
-                alert.show();
+                confirmDeleteFavorite(cursor);
 
                 return true;
             }
@@ -118,16 +108,77 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
                     null,
                     null, null, null, null);
 
+            listCursorAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
+            listView.setAdapter(listCursorAdapter);
+
+            gridCursorAdapter = new MovieGridItemCursorAdapter(this, favoriteCursor, 0);
+            gridView.setAdapter(gridCursorAdapter);
+
             if (favoriteCursor.getCount() == 0) {
                 listView.setVisibility(View.GONE);
+                statusTextView.setVisibility(View.VISIBLE);
             } else {
+                if (isDisplayAsGrid()) {
+                    gridView.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                }
+                else {
+                    gridView.setVisibility(View.GONE);
+                    listView.setVisibility(View.VISIBLE);
+                }
                 statusTextView.setVisibility(View.GONE);
-                cursorAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
-                listView.setAdapter(cursorAdapter);
+
             }
         } catch (SQLiteException e) {
             Toast.makeText(this, "Database error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void callMovieDetail(Cursor cursor) {
+        String movieId = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_MOVIE_ID));
+        String title = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_TITLE));
+        String overview = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_OVERVIEW));
+        String posterPath = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_POSTER_PATH));
+
+        Bundle movie = new Bundle();
+        movie.putString(Consts.DB_COL_MOVIE_ID, movieId);
+        movie.putString(Consts.DB_COL_TITLE, title);
+        movie.putString(Consts.DB_COL_OVERVIEW, overview);
+        movie.putString(Consts.DB_COL_POSTER_PATH, posterPath);
+
+        Intent intent = new Intent(ListFavoriteMovieActivity.this, MovieDetailActivity.class);
+        intent.putExtra(MovieDetailActivity.EXTRA_FROM_ACTIVITY, ListFavoriteMovieActivity.class.getSimpleName());
+        intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
+        startActivity(intent);
+    }
+
+    private void confirmDeleteFavorite(Cursor cursor) {
+        final String movieId = cursor.getString(cursor.getColumnIndex(Consts.DB_COL_MOVIE_ID));
+
+        // http://stackoverflow.com/a/5344958
+        // Prompt user
+        AlertDialog.Builder alert = new AlertDialog.Builder(ListFavoriteMovieActivity.this);
+
+        alert.setTitle("Warning");
+        alert.setMessage("Do you want to remove the selected movie from your favorite list?");
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing
+            }
+        });
+
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Remove movie from favorite list
+                db.delete(Consts.DB_TBL_NAME, Consts.DB_COL_MOVIE_ID + " = ?",
+                        new String[] { String.valueOf(movieId) });
+
+                updateQueryCursor();
+            }
+        });
+
+        alert.show();
     }
 
     // Trigger a new query and update cursor
@@ -157,7 +208,24 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
 
         }
 
-        cursorAdapter.changeCursor(favoriteCursor);
+        if (favoriteCursor.getCount() == 0) {
+            listView.setVisibility(View.GONE);
+            statusTextView.setVisibility(View.VISIBLE);
+        } else {
+            if (isDisplayAsGrid()) {
+                gridView.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            }
+            else {
+                gridView.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+            }
+            statusTextView.setVisibility(View.GONE);
+
+            listCursorAdapter.changeCursor(favoriteCursor);
+            gridCursorAdapter.changeCursor(favoriteCursor);
+        }
+
     }
 
     private String[] getQueryColumns() {
@@ -192,6 +260,13 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isDisplayAsGrid() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return sharedPrefs.getBoolean("prefDisplayMoviesAsGrid", false);
     }
 
     @Override

@@ -2,12 +2,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:title="MovieApp"
-        android:summary="\@2016 TinNguyen">
+        android:summary="\@2016 Nguyen Tri Tin (G1500675D)">
     </Preference>
 
     <Preference
         android:title="Version"
-        android:summary="0.2">
+        android:summary="1.0.2">
     </Preference>
 
     <Preference
