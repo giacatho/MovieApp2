@@ -5,11 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.ListMenuItemView;
@@ -65,10 +67,10 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         movieDatabaseHelper = new MovieDatabaseHelper(this);
 
         String fromActivity = getIntent().getExtras().getString(EXTRA_FROM_ACTIVITY);
-        if (ListMovieActivity.class.getSimpleName().equals(fromActivity)){
+        if (ListMovieActivity.class.getSimpleName().equals(fromActivity)) {
             int position = getIntent().getExtras().getInt(EXTRA_MOVIE_POSITION);
             movie = ListMovieActivity.movieList.get(position);
-        } else if (ListFavoriteMovieActivity.class.getSimpleName().equals(fromActivity)){
+        } else if (ListFavoriteMovieActivity.class.getSimpleName().equals(fromActivity)) {
             Bundle bundle = getIntent().getExtras().getBundle(EXTRA_MOVIE);
             movie = getMovieFromBundle(bundle);
         } else {
@@ -171,7 +173,8 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
             favorButton.setVisibility(View.VISIBLE);
         }
 
-        if (Utils.isOnline(this)) {
+        if (Utils.isOnline(this) &&
+                (isShowReleasedDate() || isShowRating() || isShowGenres() || isShowCountry())) {
             // Start to call for more movie detail information
             GetMovieDetail getMovieDetail = new GetMovieDetail();
             getMovieDetail.setDelegate(this);
@@ -184,7 +187,7 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         Map<String, String> movie = new HashMap<>();
 
         Set<String> keys = bundle.keySet();
-        for (String key: keys) {
+        for (String key : keys) {
             movie.put(key, bundle.getString(key));
         }
 
@@ -210,24 +213,62 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         taglineView.setVisibility(View.VISIBLE);
         taglineView.setText(movie.get(Consts.K_TAGLINE));
 
-        View releaseDateGroup = findViewById(R.id.release_date_group);
-        releaseDateGroup.setVisibility(View.VISIBLE);
-        TextView releaseDateView = (TextView) findViewById(R.id.release_date);
-        releaseDateView.setText(Utils.getSingaporeDateFormat(movie.get(Consts.K_RELEASE_DATE)));
+        if (isShowReleasedDate()) {
+            View releaseDateGroup = findViewById(R.id.release_date_group);
+            releaseDateGroup.setVisibility(View.VISIBLE);
+            TextView releaseDateView = (TextView) findViewById(R.id.release_date);
+            releaseDateView.setText(Utils.getSingaporeDateFormat(movie.get(Consts.K_RELEASE_DATE)));
+        }
 
-        View ratingGroup = findViewById(R.id.rating_group);
-        ratingGroup.setVisibility(View.VISIBLE);
-        TextView ratingView = (TextView) findViewById(R.id.rating);
-        ratingView.setText("0.0".equals(movie.get(Consts.K_RATING))?"N.A":movie.get(Consts.K_RATING));
+        if (isShowRating()) {
+            View ratingGroup = findViewById(R.id.rating_group);
+            ratingGroup.setVisibility(View.VISIBLE);
+            TextView ratingView = (TextView) findViewById(R.id.rating);
+            ratingView.setText("0.0".equals(movie.get(Consts.K_RATING)) ? "N.A" : movie.get(Consts.K_RATING));
+        }
 
-        View genresGroup = findViewById(R.id.genres_group);
-        genresGroup.setVisibility(View.VISIBLE);
-        TextView genresView = (TextView) findViewById(R.id.genres);
-        genresView.setText(movie.get(Consts.K_GENRES));
+        if (isShowGenres()) {
+            View genresGroup = findViewById(R.id.genres_group);
+            genresGroup.setVisibility(View.VISIBLE);
+            TextView genresView = (TextView) findViewById(R.id.genres);
+            genresView.setText(movie.get(Consts.K_GENRES));
+        }
 
-        View productCountriesGroup = findViewById(R.id.production_countries_group);
-        productCountriesGroup.setVisibility(View.VISIBLE);
-        TextView productionCountriesView = (TextView) findViewById(R.id.production_countries);
-        productionCountriesView.setText(movie.get(Consts.K_PRODUCTION_COUNTRIES));
+        if (isShowCountry()) {
+            View productCountriesGroup = findViewById(R.id.production_countries_group);
+            productCountriesGroup.setVisibility(View.VISIBLE);
+            TextView productionCountriesView = (TextView) findViewById(R.id.production_countries);
+            productionCountriesView.setText(movie.get(Consts.K_PRODUCTION_COUNTRIES));
+        }
     }
+
+
+    private boolean isShowReleasedDate() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return sharedPrefs.getBoolean("prefShowReleasedDate", true);
+    }
+
+    private boolean isShowRating() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return sharedPrefs.getBoolean("prefShowRating", true);
+    }
+
+    private boolean isShowGenres() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return sharedPrefs.getBoolean("prefShowGenres", true);
+    }
+
+    private boolean isShowCountry() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        return sharedPrefs.getBoolean("prefShowCountry", true);
+    }
+
 }

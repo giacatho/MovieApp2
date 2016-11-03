@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- https://developer.android.com/guide/topics/ui/settings.html -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory xmlns:android="http://schemas.android.com/apk/res/android"
-        android:title="List Movies"
-        android:layout="@layout/preferences_category">
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="prefDisplayMoviesAsGrid"
-                android:title="Display Movies as Grid">
-            </CheckBoxPreference>
-    </PreferenceCategory>
-
     <PreferenceCategory
-        android:title="Movies Details"
+        android:title="Movie List"
         android:layout="@layout/preferences_category">
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="prefShowReview"
-                android:title="Show Review">
-            </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefDisplayMoviesAsGrid"
+            android:title="Display Movies in Grid"
+            android:summary="By default, movies are displayed in list. If checked, movies are displayed in grid.">
+        </CheckBoxPreference>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Movie Details"
+        android:layout="@layout/preferences_category">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefShowReleasedDate"
+            android:title="Show released date">
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefShowRating"
+            android:title="Show rating">
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefShowGenres"
+            android:title="Show genres">
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefShowCountry"
+            android:title="Show country">
+        </CheckBoxPreference>
     </PreferenceCategory>
 </PreferenceScreen>
