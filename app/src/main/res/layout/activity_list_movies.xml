@@ -14,7 +14,12 @@
         android:id="@+id/status"
         android:text="No Internet. Please turn on the Internet connection and load again."
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:textAlignment="center"
+        android:textSize="16sp" />
 
     <ListView
         android:id="@+id/list_movies"

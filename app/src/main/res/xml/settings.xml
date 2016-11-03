@@ -6,7 +6,7 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="prefDisplayMoviesAsGrid"
-                android:title="Display Movies As Grid">
+                android:title="Display Movies as Grid">
             </CheckBoxPreference>
     </PreferenceCategory>
 

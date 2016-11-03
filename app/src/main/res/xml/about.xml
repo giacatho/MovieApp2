@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:title="MovieApp"
-        android:summary="\@2016 Nguyen Tri Tin (G1500675D)">
+        android:summary="Copyright &#169;2016 Nguyen Tri Tin (G1500675D)">
     </Preference>
 
     <Preference
