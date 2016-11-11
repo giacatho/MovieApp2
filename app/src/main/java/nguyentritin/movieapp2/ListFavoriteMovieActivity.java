@@ -27,8 +27,12 @@ import nguyentritin.movieapp2.adapter.MovieListItemCursorAdapter;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 
-// http://www.tutorialsbuzz.com/2013/11/android-sqlite-database-with.html
-// Menu Group: http://stackoverflow.com/questions/15851920/how-do-i-add-a-title-to-my-menu-group
+/**
+ * Created by giacatho on 10/8/16.
+ * Concept learned from: Head First Android books and multiple places
+ * http://www.tutorialsbuzz.com/2013/11/android-sqlite-database-with.html
+ * Menu Group: http://stackoverflow.com/questions/15851920/how-do-i-add-a-title-to-my-menu-group
+ */
 public class ListFavoriteMovieActivity extends AppCompatActivity {
 
     private SQLiteDatabase db;

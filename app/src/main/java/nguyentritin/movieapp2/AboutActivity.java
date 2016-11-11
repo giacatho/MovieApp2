@@ -4,6 +4,9 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * Created by giacatho on 10/12/16.
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @Override

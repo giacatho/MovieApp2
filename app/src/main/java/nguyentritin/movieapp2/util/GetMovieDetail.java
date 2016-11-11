@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * Created by giacatho on 10/8/16.
+ * Concept learned from https://developer.android.com/reference/android/os/AsyncTask.html
  */
 public class GetMovieDetail extends AsyncTask<Void, Void, Void> {
     private final String TAG = "GetMovieDetail";

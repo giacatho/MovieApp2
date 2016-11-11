@@ -21,7 +21,7 @@ import nguyentritin.movieapp2.util.Utils;
 
 /**
  * Created by giacatho on 9/24/16.
- * Credit: http://www.androidhive.info/2012/02/android-custom-listview-with-image-and-text/
+ * Concept learned from: http://www.androidhive.info/2012/02/android-custom-listview-with-image-and-text/
  */
 
 public class MovieListAdapter extends BaseAdapter {

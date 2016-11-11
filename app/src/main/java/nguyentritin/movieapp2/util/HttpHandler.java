@@ -15,9 +15,9 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-// http://www.androidhive.info/2012/01/android-json-parsing-tutorial/
 /**
  * Created by nguyentritin on 22/9/16.
+ * Concept learned from: http://www.androidhive.info/2012/01/android-json-parsing-tutorial/
  */
 public class HttpHandler {
 

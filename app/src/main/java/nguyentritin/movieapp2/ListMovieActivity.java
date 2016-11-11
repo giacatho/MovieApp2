@@ -13,11 +13,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.util.Util;
-
-import org.w3c.dom.Text;
-
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +22,10 @@ import nguyentritin.movieapp2.util.GetMovies;
 import nguyentritin.movieapp2.util.GetMoviesDelegate;
 import nguyentritin.movieapp2.util.Utils;
 
+/**
+ * Created by giacatho on 10/1/16.
+ * Concept learned from: Head First Android books and multiple places
+ */
 public class ListMovieActivity extends AppCompatActivity implements GetMoviesDelegate {
     private String TAG = ListMovieActivity.class.getSimpleName();
 

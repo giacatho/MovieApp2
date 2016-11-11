@@ -1,10 +1,7 @@
 package nguyentritin.movieapp2;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +13,9 @@ import android.widget.ListView;
 
 import nguyentritin.movieapp2.util.Consts;
 
+/**
+ * Created by giacatho on 09/1/16.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

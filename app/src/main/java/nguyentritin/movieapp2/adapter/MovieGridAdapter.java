@@ -18,10 +18,11 @@ import nguyentritin.movieapp2.util.Consts;
 
 /**
  * Created by giacatho on 10/8/16.
+ * Concept learned from: https://developer.android.com/guide/topics/ui/layout/gridview.html
  */
 
 public class MovieGridAdapter extends BaseAdapter {
-//    https://developer.android.com/guide/topics/ui/layout/gridview.html
+
 
     private static final String TAG = MovieGridAdapter.class.getSimpleName();
 

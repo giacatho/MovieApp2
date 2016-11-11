@@ -30,6 +30,10 @@ import nguyentritin.movieapp2.util.GetMovieDetailDelegate;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 import nguyentritin.movieapp2.util.Utils;
 
+/**
+ * Created by giacatho on 10/7/16.
+ * Concept learned from: Head First Android books and multiple places
+ */
 public class MovieDetailActivity extends AppCompatActivity implements GetMovieDetailDelegate {
     public static final String EXTRA_FROM_ACTIVITY = "from_activity";
     public static final String EXTRA_MOVIE_POSITION = "position";
@@ -73,7 +77,6 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
             Glide.with(this).load(Consts.POSTER_ROOT + posterPath).into(posterImageView);
         }
 
-
         // Favorite button
         final Button favorButton = (Button) findViewById(R.id.detail_favor_btn);
         favorButton.setOnClickListener(new View.OnClickListener() {
@@ -85,23 +88,23 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
                             movie.get(Consts.DB_COL_OVERVIEW),
                             movie.get(Consts.DB_COL_POSTER_PATH));
 
-                    // Hide the favorButton, using animation
+                    // Hide the favorButton, using animation, technique learned from:
                     // https://www.codementor.io/tips/7812274333/android-adding-simple-animations-while-setvisibility-view-gone
                     // http://stackoverflow.com/a/19766034
                     favorButton.animate()
-                            .translationY(favorButton.getHeight())
-                            .alpha(0.0f)
-                            .setDuration(1500)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    favorButton.setVisibility(View.GONE);
-                                }
-                            });
+                        .translationY(favorButton.getHeight())
+                        .alpha(0.0f)
+                        .setDuration(1500)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                favorButton.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "This movie has been successfully added to your favorite list.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                    Toast.makeText(getApplicationContext(), "This movie has been successfully added to your favorite list.",
-                            Toast.LENGTH_SHORT).show();
                 } catch (SQLiteException e) {
                     Toast.makeText(MovieDetailActivity.this, "DB error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
@@ -114,18 +117,18 @@ public class MovieDetailActivity extends AppCompatActivity implements GetMovieDe
         searchTrailerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Using object animator to create the bouncing animation
+                // Concept learned fromm https://developer.android.com/reference/android/animation/ObjectAnimator.html
+                ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", -100f, 0f);
+                animator.setDuration(1000);
+                animator.setInterpolator(new BounceInterpolator());
+                animator.setRepeatCount(2);
+                animator.start();
 
-                // Todo: refine the implemenation
-                // http://stackoverflow.com/a/15007494
-                ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", -100f, 0f);
-                animY.setDuration(1000); //1sec
-                animY.setInterpolator(new BounceInterpolator());
-                animY.setRepeatCount(2);
-                animY.start();
-
+                // Then, at the same time, trigger the trailer search
                 String query = movie.get("title") + " trailer official";
                 try {
-                    // Try open the Youtube app
+                    // Try open the Youtube app, technique learned from:
                     // http://stackoverflow.com/questions/9860456/search-a-specific-string-in-youtube-application-from-my-app
                     Intent intent = new Intent(Intent.ACTION_SEARCH);
                     intent.setPackage("com.google.android.youtube");

@@ -19,7 +19,7 @@ import nguyentritin.movieapp2.util.Utils;
 
 /**
  * Created by giacatho on 10/9/16.
- * https://coderwall.com/p/fmavhg/android-cursoradapter-with-custom-layout-and-how-to-use-it
+ * Concept learned from: https://coderwall.com/p/fmavhg/android-cursoradapter-with-custom-layout-and-how-to-use-it
  */
 
 public class MovieListItemCursorAdapter extends CursorAdapter {

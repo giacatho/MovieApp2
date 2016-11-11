@@ -4,10 +4,16 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-// http://stackoverflow.com/questions/6822319/what-to-use-instead-of-addpreferencesfromresource-in-a-preferenceactivity
-// http://viralpatel.net/blogs/android-preferences-activity-example/
-// https://developer.android.com/guide/topics/ui/settings.html#Fragment
-// http://stackoverflow.com/a/34697171
+/**
+ * Created by giacatho on 10/30/16.
+ * Concept learned from:
+ * http://stackoverflow.com/questions/6822319/what-to-use-instead-of-addpreferencesfromresource-in-a-preferenceactivity
+ * http://viralpatel.net/blogs/android-preferences-activity-example/
+ * https://developer.android.com/guide/topics/ui/settings.html#Fragment
+ * http://stackoverflow.com/a/34697171
+ *
+ */
+
 public class UserSettingsActivity extends AppCompatActivity {
 
     @Override

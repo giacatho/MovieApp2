@@ -10,6 +10,7 @@ import android.util.Log;
 
 /**
  * Created by nguyentritin on 23/9/16.
+ * Concept learned from CI6222 class
  */
 
 public class MovieDatabaseHelper extends SQLiteOpenHelper {
