@@ -3,51 +3,30 @@ package nguyentritin.movieapp2;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.ListMenuItemView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nguyentritin.movieapp2.adapter.MovieGridAdapter;
-import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
-import nguyentritin.movieapp2.adapter.MovieListAdapter;
-import nguyentritin.movieapp2.model.Movie;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.GetMovieDetail;
 import nguyentritin.movieapp2.util.GetMovieDetailDelegate;
-import nguyentritin.movieapp2.util.GetMoviesDelegate;
-import nguyentritin.movieapp2.util.HttpsHandler;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 import nguyentritin.movieapp2.util.Utils;
 

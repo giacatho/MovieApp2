@@ -27,7 +27,7 @@
         <activity android:name=".ListFavoriteMovieActivity" />
         <activity android:name=".UserSettingsActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".InstructionVideoActivity"></activity>
+        <activity android:name=".DemoVideoActivity"></activity>
     </application>
 
 </manifest>

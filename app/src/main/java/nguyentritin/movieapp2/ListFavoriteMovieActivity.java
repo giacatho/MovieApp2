@@ -22,10 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import org.w3c.dom.Text;
-
 import nguyentritin.movieapp2.adapter.MovieGridItemCursorAdapter;
-import nguyentritin.movieapp2.adapter.MovieItemCursorAdapter;
+import nguyentritin.movieapp2.adapter.MovieListItemCursorAdapter;
 import nguyentritin.movieapp2.util.Consts;
 import nguyentritin.movieapp2.util.MovieDatabaseHelper;
 
@@ -108,7 +106,7 @@ public class ListFavoriteMovieActivity extends AppCompatActivity {
                     null,
                     null, null, null, null);
 
-            listCursorAdapter = new MovieItemCursorAdapter(this, favoriteCursor, 0);
+            listCursorAdapter = new MovieListItemCursorAdapter(this, favoriteCursor, 0);
             listView.setAdapter(listCursorAdapter);
 
             gridCursorAdapter = new MovieGridItemCursorAdapter(this, favoriteCursor, 0);

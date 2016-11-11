@@ -11,9 +11,9 @@
     </Preference>
 
     <Preference
-        android:title="Instruction Video" >
+        android:title="Demo Video" >
         <intent
             android:targetPackage="nguyentritin.movieapp2"
-            android:targetClass="nguyentritin.movieapp2.InstructionVideoActivity"/>
+            android:targetClass="nguyentritin.movieapp2.DemoVideoActivity"/>
             </Preference>
 </PreferenceScreen>
